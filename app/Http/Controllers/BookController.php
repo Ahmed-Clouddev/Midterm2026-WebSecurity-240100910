@@ -19,10 +19,7 @@ class BookController extends Controller
 
     public function catalog(): View
     {
-        $books = Book::query()
-            ->where('copies', '>', 0)
-            ->latest()
-            ->paginate(10);
+        $books = Book::query()->latest()->paginate(10);
 
         return view('books.catalog', compact('books'));
     }

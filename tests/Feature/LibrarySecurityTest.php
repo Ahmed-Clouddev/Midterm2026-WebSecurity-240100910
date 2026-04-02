@@ -104,4 +104,23 @@ class LibrarySecurityTest extends TestCase
         $this->assertSame(0, $book->copies);
         $this->assertSame(0, Borrowing::query()->count());
     }
+
+    public function test_catalog_shows_unavailable_books_with_warning_badge(): void
+    {
+        /** @var User $member */
+        $member = User::factory()->createOne(['role' => 'Member']);
+
+        $book = Book::query()->create([
+            'title' => 'Unavailable Catalog Book',
+            'author' => 'Exam Author',
+            'isbn' => 'ISBN-TEST-003',
+            'copies' => 0,
+        ]);
+
+        $response = $this->actingAs($member)->get('/catalog');
+
+        $response->assertOk();
+        $response->assertSee('Book Currently Unavailable');
+        $response->assertSee('Unavailable Catalog Book');
+    }
 }
