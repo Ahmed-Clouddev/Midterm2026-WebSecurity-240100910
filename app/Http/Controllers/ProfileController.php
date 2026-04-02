@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Borrowing;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -16,8 +17,20 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        $activeBorrowCount = 0;
+        $borrowingLimit = 3;
+
+        if ($request->user()->isMember()) {
+            $activeBorrowCount = Borrowing::query()
+                ->where('user_id', $request->user()->id)
+                ->where('status', 'borrowed')
+                ->count();
+        }
+
         return view('profile.edit', [
             'user' => $request->user(),
+            'borrowingLimit' => $borrowingLimit,
+            'activeBorrowCount' => $activeBorrowCount,
         ]);
     }
 

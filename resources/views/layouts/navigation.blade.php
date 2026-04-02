@@ -15,6 +15,36 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('books.index')" :active="request()->routeIs('books.*')">
+                        {{ __('Books') }}
+                    </x-nav-link>
+
+                    @if (Auth::user()->isMember())
+                        <x-nav-link :href="route('catalog.index')" :active="request()->routeIs('catalog.*')">
+                            {{ __('Catalog') }}
+                        </x-nav-link>
+
+                        <x-nav-link :href="route('borrowings.index')" :active="request()->routeIs('borrowings.*')">
+                            {{ __('My Borrowings') }}
+                        </x-nav-link>
+                    @endif
+
+                    @if (Auth::user()->isAdmin() || Auth::user()->isLibrarian())
+                        <x-nav-link :href="route('members.index')" :active="request()->routeIs('members.*')">
+                            {{ __('Members') }}
+                        </x-nav-link>
+                    @endif
+
+                    @if (Auth::user()->isAdmin())
+                        <x-nav-link :href="route('admin.librarians.create')" :active="request()->routeIs('admin.librarians.*')">
+                            {{ __('Create Librarian') }}
+                        </x-nav-link>
+
+                        <x-nav-link :href="route('admin.roles.index')" :active="request()->routeIs('admin.roles.*')">
+                            {{ __('Roles') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -70,6 +100,36 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('books.index')" :active="request()->routeIs('books.*')">
+                {{ __('Books') }}
+            </x-responsive-nav-link>
+
+            @if (Auth::user()->isMember())
+                <x-responsive-nav-link :href="route('catalog.index')" :active="request()->routeIs('catalog.*')">
+                    {{ __('Catalog') }}
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('borrowings.index')" :active="request()->routeIs('borrowings.*')">
+                    {{ __('My Borrowings') }}
+                </x-responsive-nav-link>
+            @endif
+
+            @if (Auth::user()->isAdmin() || Auth::user()->isLibrarian())
+                <x-responsive-nav-link :href="route('members.index')" :active="request()->routeIs('members.*')">
+                    {{ __('Members') }}
+                </x-responsive-nav-link>
+            @endif
+
+            @if (Auth::user()->isAdmin())
+                <x-responsive-nav-link :href="route('admin.librarians.create')" :active="request()->routeIs('admin.librarians.*')">
+                    {{ __('Create Librarian') }}
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('admin.roles.index')" :active="request()->routeIs('admin.roles.*')">
+                    {{ __('Roles') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->
@@ -77,6 +137,7 @@
             <div class="px-4">
                 <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
                 <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->role }}</div>
             </div>
 
             <div class="mt-3 space-y-1">
